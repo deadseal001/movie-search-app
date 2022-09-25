@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"> -->
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/sytle.css"/>
     <title>Cherry Movie Search</title>
 </head>
@@ -21,18 +22,23 @@
         <div class="actorInfo">
             <img class="actor-img" width="150" ></img>
             <ul>
-                <li id="dob"></li>
-                <li id="birthPlace"></li>
                 <li id="known"></li>
-                <li id="bio"></li>
+                <li id="gender"></li>
+                <li id="dob" class="truncate"></li>
+                <li id="deathday"></li>
+                <li id="birthPlace"></li>
                 <li>Homepage: <a id="link"></a></li>
+                <li id="bio"></li>
             </ul>
         </div>
         <div class="movieCardList">
             
         </div>
+        <button id="previous" class="">Previous</button>
+        <button id="next">Next</button>
     </main>
 
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="./assets/js/actor.js"></script>
 </body>
