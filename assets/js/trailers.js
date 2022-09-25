@@ -1,41 +1,49 @@
 const searchInput = $(`.search-box`);
 const apiKey = `a725cdae9e4df8f603b55513ee6ac4e8`;
 let movieID = [];
-let movieImgPath = ``;
-const movieTrailerPath = ``;
+let movieTitle = [];
+let moviePoster = [];
+let movieTrailerKey = [];
 
-const getMovieData = function (movieSearch) {
+const displayMovieData = function () {
+  // MOVIE TITLE
+  const movieTitleEl = $(`.movie-title`);
+  $(movieTitleEl).text(movieTitle);
+
+  // MOVIE POSTER
+  const moviePosterEl = $(`#movie-poster`);
+  $(moviePosterEl).attr(`src`, `https://image.tmdb.org/t/p/w500${moviePoster}`);
+
+  // MOVIE TRAILER
+  const movieTrailerEl = $(`#movie-trailer`);
+  const movieTrailerFrame = $(`iframe`);
+  $(movieTrailerFrame).attr(`src`, `https://www.youtube.com/embed/${movieTrailerKey}`);
+
+  $(movieTrailerEl).append(movieTrailerFrame);
+};
+
+const getMovieData = async (movieSearch) => {
   const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${movieSearch}`;
+
   // FETCH MOVIE DATA
-  fetch(apiUrl)
-    .then((response) => {
-      if (response.ok) {
-        response.json().then((data) => {
-          console.log(data);
-          // RETRIEVE MOVIE ID & MOVIE IMAGE PATH
-          movieID = data.results[0].id;
-          // console.log(movieID);
-          movieImgPath = data.results[0].poster_path;
-          // console.log(movieImgPath);
+  const movieData = await fetch(apiUrl)
+    .then((response) => response.json())
+    .then((data) => data);
+  // MOVIE ID, TITLE, POSTER
+  movieID = movieData.results[0].id;
+  movieTitle = movieData.results[0].title;
+  moviePoster = movieData.results[0].poster_path;
 
-          // SET MOVIE TITLE TO PAGE
-          const movieName = $(`.movie-name`);
-          const movieNameTitle = data.results[0].original_title;
-          $(movieName).text(movieNameTitle);
-          // getMovieTrailer(movieID);
+  // FETCH MOVIE TRAILER
+  const trailerUrl = `https://api.themoviedb.org/3/movie/${movieID}/videos?api_key=${apiKey}&language=en-US`;
+  const movieTrailer = await fetch(trailerUrl)
+    .then((response) => response.json())
+    .then((data) => data);
+  movieTrailerKey = movieTrailer.results[0].key;
 
-          // SET MOVIE IMAGE TO PAGE
-          const movieImg = $(`#movie-img`);
-          const movieImgUrl = `https://image.tmdb.org/t/p/w500${movieImgPath}`;
-          $(movieImg).attr(`src`, movieImgUrl);
-        });
-      } else {
-        alert(`Error: Movie Not Found`);
-      }
-    })
-    .catch((error) => {
-      alert(`Unable to connect to Movie Database`);
-    });
+  console.log(movieID, movieTitle, moviePoster, movieTrailerKey);
+
+  displayMovieData();
 };
 
 const formSubmitHandler = function (event) {
