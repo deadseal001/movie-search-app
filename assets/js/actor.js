@@ -148,7 +148,7 @@ actorMovie=getActorMovies();
 
 $(".movieCardList").on("click",".link", function(){
     var movieID=$(this).attr("data-id");
-    window.location.href="./movie.html?movieid="+movieID;//pass movie ID to the next page
+    window.location.href="./trailers.html?movieid="+movieID;//pass movie ID to the trailers.html page
 });
 //eventlistener to next button
 
@@ -160,3 +160,23 @@ $("#next").on("click",function(){
     nextval=nextval+1;
     listMovies(movies);
 })
+
+var searchFormEl=document.querySelector(".search-form");
+var searchBoxEl=document.querySelector(".searchBox");
+function formSubmitHandler(event){
+    event.preventDefault();
+    var words= searchBoxEl.value.trim();
+    console.log(words);
+    var wordArr=words.split(" ");
+    var len=wordArr.length;
+    var queryStr="";
+    queryStr=wordArr[0];
+    for (var i=1; i<len; i++){
+        queryStr=queryStr+"+"+wordArr[i];
+    }
+    console.log(queryStr);
+    $(".searchBox").val("");
+    document.location.href="./index.html?keyword="+queryStr;
+}
+
+$(searchFormEl).on("submit", formSubmitHandler);

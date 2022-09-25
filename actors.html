@@ -4,20 +4,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/sytle.css"/>
     <title>Cherry Movie Search</title>
 </head>
 <body>
+    <!-- background video -->
+    <video autoplay muted loop id="myVideo">
+        <source src="./assets/video/cherry flower.mp4" type="video/mp4">
+    </video>
+
     <header>
-        <h1>Cherry Movie Search</h1>
+        <h1 class="text-4xl bg-purple-500">Cherry Movie Search</h1>
     </header>
     <main>
-        <div class="search-box">
+        <form class="search-form">
             <input class="searchBox"></input>
-            <button class="searchBtn">Search</button>
-        </div>
+            <button class="searchBtn"><span class="fa fa-search"></span> Search</button>
+        </form>
         <h1 id="actorname"></h1> 
         <div class="actorInfo">
             <img class="actor-img" width="150" ></img>
@@ -38,7 +43,6 @@
         <button id="next">Next</button>
     </main>
 
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="./assets/js/actor.js"></script>
 </body>
