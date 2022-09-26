@@ -23,8 +23,8 @@
 // search();
 
 var IdString=document.location.search;
-// var actorID= queryString.split("=")[1]; //get ID from document.location
-var actorID="500";
+var actorID= IdString.split("=")[1]; //get ID from document.location
+// var actorID="31";
 
 var getActorInfo=function (){
     var actorinfoUrl="https://api.themoviedb.org/3/person/"+actorID+"?api_key=074915bcf109483ca070f5358f0e524b&language=en-US"
@@ -94,12 +94,14 @@ var listMovies=function(data2){
     var movieCardListEl=document.querySelector(".movieCardList");
     console.log("nextval = "+nextval);
     $(".movieCard").remove();
+    var firstcard=nextval*6+1;
+    var lastcard=Math.min(data2.cast.length,firstcard+5);
     var left = data2.cast.length-(nextval+1)*shownumber;
     console.log(left);
     for (var i=0; i<Math.min(shownumber,left); i++){
         var movieID=data2.cast[i+nextval*shownumber].id;
         var movieCardEl=document.createElement("card");
-            movieCardEl.className="movieCard";
+            movieCardEl.classList="movieCard w-1/6 gap-3";
             movieCardEl.setAttribute("width", "150px");
         var posterLink="https://image.tmdb.org/t/p/w500"+data2.cast[i+nextval*shownumber].poster_path;
         var postEl=document.createElement("img");
@@ -138,7 +140,7 @@ var listMovies=function(data2){
     } else {
         document.getElementById("next").style.visibility="visible";
     }
-
+    $("#cardnumber").text(firstcard+" - "+lastcard+" / "+data2.cast.length);
 }
 
 

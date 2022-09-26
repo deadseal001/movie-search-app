@@ -10,8 +10,9 @@
     bottom: 0;
     z-index: -1;
 }
-.search-form {
-    margin: 50px;
+
+header, main{
+    background-color: rgb(59,130,246,0.8);
 }
 ul {
     list-style-type:  none;

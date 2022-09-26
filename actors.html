@@ -15,32 +15,42 @@
         <source src="./assets/video/cherry flower.mp4" type="video/mp4">
     </video>
 
-    <header>
-        <h1 class="text-4xl bg-purple-500">Cherry Movie Search</h1>
+    <header class="mx-auto w-5/6 bg-gradient-to-r from-green-200 to-blue-500">
+        <h1 class="text-4xl mx-auto text-center">Cherry Movie Search</h1>
     </header>
-    <main>
-        <form class="search-form">
-            <input class="searchBox"></input>
-            <button class="searchBtn"><span class="fa fa-search"></span> Search</button>
+    <main class="mx-auto w-5/6 text-xl">
+        <form class="search-form py-5 gap-4 flex justify-around">
+            <input class="searchBox w-2/3"></input>
+            <button class="searchBtn w-1/4 bg-yellow-600 text-2xl"><span class="fa fa-search"></span> Search</button>
         </form>
-        <h1 id="actorname"></h1> 
-        <div class="actorInfo">
-            <img class="actor-img" width="150" ></img>
-            <ul>
+        <h2 class="text-4xl  text-center" id="actorname"></h2> 
+        <div class="actorInfo gap-4 flex flex-row">
+            <div class="w-1/4">
+                <img class="actor-img object-scale-down"></img>
+            </div>
+            <ul class="text-xl w-3/4 flex flex-col space-y-3">
                 <li id="known"></li>
                 <li id="gender"></li>
-                <li id="dob" class="truncate"></li>
+                <li id="dob" class="overflow-auto"></li>
                 <li id="deathday"></li>
                 <li id="birthPlace"></li>
                 <li>Homepage: <a id="link"></a></li>
-                <li id="bio"></li>
+                <li id="bio"></p> 
             </ul>
         </div>
-        <div class="movieCardList">
-            
+        
+        <div class="py-4">
+            <div class="movieCardList flex justify-around">
+                
+                
+            </div>
         </div>
-        <button id="previous" class="">Previous</button>
-        <button id="next">Next</button>
+        <div class="flex">
+            <button id="previous" class="w-1/3  text-center">Previous</button>
+            <p id="cardnumber" class="w-1/3 text-center"></p>
+            <button id="next" class="w-1/3 text-center">Next</button>
+        </div>
+        
     </main>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
