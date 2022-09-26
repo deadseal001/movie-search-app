@@ -23,8 +23,8 @@
 // search();
 
 var IdString=document.location.search;
-// var actorID= queryString.split("=")[1]; //get ID from document.location
-var actorID="500";
+var actorID= IdString.split("=")[1]; //get ID from document.location
+
 
 var getActorInfo=function (){
     var actorinfoUrl="https://api.themoviedb.org/3/person/"+actorID+"?api_key=074915bcf109483ca070f5358f0e524b&language=en-US"
