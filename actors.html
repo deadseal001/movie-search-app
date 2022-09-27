@@ -13,10 +13,14 @@
         <h1>Cherry Movie Search</h1>
     </header>
     <main>
-        <form class="search-form">
-            <input class="searchBox"></input>
-            <button class="searchBtn">Search</button>
-        </form >
+        <div>
+            <form class="search-form">
+                <input class="searchBox"></input>
+                <button class="searchBtn">Search</button>
+            </form >
+            <div class="searchList"></div>
+            <button class="clear Btn bg-red-600"><span class="fa fa-trash"></span>Clear Search List</button>
+        </div>
         <h1 id="actorname"></h1> 
         <div class="actorInfo">
             <img class="actor-img" width="150" ></img>
@@ -37,7 +41,7 @@
         <button id="next">Next</button>
     </main>
 
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="./assets/js/actor.js"></script>
 </body>

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/sytle.css"/>
     <title>Document</title>
 </head>
 <body>
@@ -11,9 +13,33 @@
         <h1>movie search app</h1>
     </header>
     <main>
-        <input class="searchBox">
-        </input>
-        <button class="searchBtn">Search</button>
+        <div>
+            <form class="search-form">
+                <input class="searchBox"></input>
+                <button class="searchBtn">Search</button>
+            </form >
+            <div class="searchList"></div>
+            <button id="clearBtn" class="bg-red-600"><span class="fa fa-trash"></span> Clear Search List</button>
+        </div>
+        <div class="container">
+
+        </div>
     </main>
+
+
+    <!-- modal -->
+    <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="citylist-modal" aria-hidden="true">
+        <div class="modal-content modal-dialog">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+            </div>
+            <div>
+                <button class="cancelBtn">OK</button>
+            </div> 
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="./assets/js/script.js"></script>
 </body>
 </html>

@@ -8,6 +8,6 @@ ul {
     cursor: pointer;
 }
 
-#previous, #next {
+#previous, #next, #clearBtn {
     visibility: hidden;
 }
