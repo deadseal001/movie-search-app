@@ -15,7 +15,34 @@ const providerWrapper = $(`.provider-wrapper`);
 
 // ! ADDED movieIDcapture TO GET MOVIE ID FROM MOVIE SEARCH, THEN PASS IT TO getMovieData() at line 77
 // ! DON'T FORGET TO CHANGE movieID to movieIDcapture in the fetches at lines 72, 85, 100
-const movieIDcapture = window.location.search.split(`=`)[1];
+var movieIDcapture = window.location.search.split(`=`)[1];
+
+//search list 
+function loadSearchList(){
+  //remove all the searchList button
+  $(".listBtn").remove();
+  var searchList=JSON.parse(localStorage.getItem("movieSearchList"));
+  if(!searchList) {
+      console.log("searchList!")
+      searchList=[];
+  }
+  for (var i=0; i< (Math.min(12, searchList.length)); i++) {
+      var searchEl=document.createElement("button");
+      searchEl.textContent=searchList[searchList.length-1-i];
+      searchEl.classList="listBtn bg-gray-500";
+      $(".searchList").append(searchEl);
+  }
+  if(searchList.length > 0) {
+      document.getElementById("clearBtn").style.visibility="visible";
+  }
+};
+//clear search list button function
+function clearList(){
+  $(".listBtn").remove();
+  localStorage.setItem("movieSearchList",JSON.stringify([]));
+  document.getElementById("clearBtn").style.visibility="hidden";
+}
+
 
 // ! DISPLAY MOVIE DATA
 const displayMovieData = function () {
@@ -68,23 +95,27 @@ const getMovieData = async (movieSearch) => {
   movieProviderName = [];
   movieProviderImg = [];
   movieProviderLink = [];
-  const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${movieSearch}`;
+  // const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${movieSearch}`;
+  const apiUrl = 'https://api.themoviedb.org/3/movie/'+movieIDcapture+'?api_key=a725cdae9e4df8f603b55513ee6ac4e8&language=en-US'
   const movieData = await fetch(apiUrl)
     .then((response) => response.json())
     .then((data) => data);
   // MOVIE ID, TITLE, DATE RELEASED, POSTER
-  // movieID = movieIDcapture;
-  movieID = movieData.results[0].id;
-  movieTitle = movieData.results[0].title;
-  movieDate = movieData.results[0].release_date;
-  moviePoster = movieData.results[0].poster_path;
+  console.log(movieData);
+  //movieID = movieData.results[0].id;
+  movieTitle = movieData.title;
+  movieDate = movieData.release_date;
+  moviePoster = movieData.poster_path;
+ 
+ 
   console.log(movieData);
 
   // FETCH MOVIE PROVIDERS
-  const providerUrl = `https://api.themoviedb.org/3/movie/${movieID}/watch/providers?api_key=${apiKey}`;
+  const providerUrl = `https://api.themoviedb.org/3/movie/${movieIDcapture}/watch/providers?api_key=${apiKey}`;
   const movieProviderData = await fetch(providerUrl)
     .then((response) => response.json())
     .then((data) => data);
+    
   // console.log(movieProviderData);
 
   // MOVIE PROVIDERS
@@ -96,7 +127,7 @@ const getMovieData = async (movieSearch) => {
   }
 
   // FETCH MOVIE TRAILER
-  const trailerUrl = `https://api.themoviedb.org/3/movie/${movieID}/videos?api_key=${apiKey}&language=en-US`;
+  const trailerUrl = `https://api.themoviedb.org/3/movie/${movieIDcapture}/videos?api_key=${apiKey}&language=en-US`;
   const movieTrailer = await fetch(trailerUrl)
     .then((response) => response.json())
     .then((data) => data);
@@ -105,6 +136,21 @@ const getMovieData = async (movieSearch) => {
   displayMovieData();
 };
 
+//show modal instead of alert
+function callmodal(words){
+
+  $('#error-modal').modal('show');
+      $(".modal-title").text(words);
+
+  //cancel button
+  $(".cancelBtn").on("click",function(){
+      $(".modal-title").text("");
+      $('#error-modal').modal('hide');
+      $('searchBox').trigger("focus");
+  })
+}
+
+// Wenbo: We will guide all the search to page 1, so I commented out the follwing code
 const formSubmitHandler = function (event) {
   event.preventDefault();
   // $(movieProviderList).remove();
@@ -112,10 +158,44 @@ const formSubmitHandler = function (event) {
   const movieSearch = $(searchBox).val().trim();
   // console.log(movieSearch);
 
-  if (movieSearch) {
+  var wordArr=movieSearch.split(" ");
+  var len=wordArr.length;
+  var queryStr="";
+  queryStr=wordArr[0];
+  for (var i=1; i<len; i++){
+      queryStr=queryStr+"+"+wordArr[i];
+  }
+  console.log(queryStr);
+  $(".searchBox").val("");
+
+
+  if (movieSearch != "") {
     searchBox.val(``);
-    getMovieData(movieSearch);
+    //getMovieData(movieSearch);
+    document.location.href="./index.html?keyword="+queryStr;
+  } else {
+    callmodal("Please input Actor or Movie of interest in the search box!")//add call mudal function.
+
   }
 };
 
-$(searchInput).submit(formSubmitHandler);
+ $(searchInput).submit(formSubmitHandler);
+
+
+
+$(".searchList").on("click", ".listBtn", function(){
+  var searchwords=$(this).text();
+  var searchWordArr=searchwords.split(" ");
+  var searchKeyWord=searchWordArr[0];
+  for (var i=1; i<searchWordArr.length; i++){
+      searchKeyWord=searchKeyWord+"+"+searchWordArr[i];
+  }
+  console.log(searchKeyWord);
+  document.location.href="./index.html?keyword="+searchKeyWord;
+})
+
+$("#clearBtn").on("click", clearList);
+
+loadSearchList();
+if (movieIDcapture)
+getMovieData();
