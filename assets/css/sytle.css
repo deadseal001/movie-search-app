@@ -1,0 +1,13 @@
+.search-box {
+    margin: 50px;
+}
+ul {
+    list-style-type:  none;
+}
+.link:hover {
+    cursor: pointer;
+}
+
+#previous, #next {
+    visibility: hidden;
+}
