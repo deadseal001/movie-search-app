@@ -1,30 +1,30 @@
-
-// var searchInput="tom+cruise";//get this info from search box
-// var getIDUrl="https://api.themoviedb.org/3/search/multi?api_key=074915bcf109483ca070f5358f0e524b&language=en-US&query="+searchInput;//two or more words linked with +//change api key with yours
-// var search=function(){
-//     fetch(getIDUrl).then(function (IDresponse) {
-//         if (IDresponse.ok){
-//             // console.log(IDresponse);
-//             IDresponse.json().then(function(IDdata){
-//                 console.log(IDdata);
-//                 // list search results
-//                 // case "media_type"=person show person name and profile
-//                     //click link to send to page2
-//                 // case "media_type"=movie show movie name and profile 
-//                     //click lind and send to page3
-//             })
-//         } else {
-//             alert('Error: Actor Not Found');
-//         }
-//     });
-// }
-
-// //click search button to call search function
-// search();
-
 var IdString=document.location.search;
 var actorID= IdString.split("=")[1]; //get ID from document.location
 
+function loadSearchList(){
+    //remove all the searchList button
+    $(".listBtn").remove();
+    searchList=JSON.parse(localStorage.getItem("movieSearchList"));
+    if(!searchList) {
+        console.log("searchList!")
+        searchList=[];
+    }
+    for (var i=0; i< (Math.min(12, searchList.length)); i++) {
+        var searchEl=document.createElement("button");
+        searchEl.textContent=searchList[searchList.length-1-i];
+        searchEl.classList="listBtn bg-gray-500";
+        $(".searchList").append(searchEl);
+    }
+    if(searchList.length > 0) {
+        document.getElementById("clearBtn").style.visibility="visible";
+    }
+};
+
+function clearList(){
+    $(".listBtn").remove();
+    localStorage.setItem("movieSearchList",[]);
+    document.getElementById("clearBtn").style.visibility="hidden";
+}
 
 var getActorInfo=function (){
     var actorinfoUrl="https://api.themoviedb.org/3/person/"+actorID+"?api_key=074915bcf109483ca070f5358f0e524b&language=en-US"
@@ -61,12 +61,24 @@ var getActorInfo=function (){
             })
             
         } else {
-            alert('Error: Actor Not Found');//have to change to modal
+            callmodal("Actor");
         }
     });
     
 }
 
+function callmodal(words){
+
+    $('#error-modal').modal('show');
+        $(".modal-title").text("Error! "+words+" Not Found");
+
+    //cancel button
+    $(".cancelBtn").on("click",function(){
+        $(".modal-title").text("");
+        $('#error-modal').modal('hide');
+        $('searchBox').trigger("focus");
+    })
+}
 
 var movies=[];
 
@@ -82,7 +94,7 @@ var getActorMovies=function(){
             })
             
         } else {
-            alert('Error: Actor Not Found');
+            callmodal("Actor");
         }
     });
 }
@@ -141,14 +153,14 @@ var listMovies=function(data2){
 
 }
 
+loadSearchList();
 
-actorData=getActorInfo();
-
-actorMovie=getActorMovies();
+getActorInfo();
+getActorMovies();
 
 $(".movieCardList").on("click",".link", function(){
     var movieID=$(this).attr("data-id");
-    window.location.href="./movie.html?movieid="+movieID;//pass movie ID to the next page
+    window.location.href="./trailers.html?movieid="+movieID;//pass movie ID to the next page
 });
 //eventlistener to next button
 
@@ -166,6 +178,7 @@ var searchBoxEl=document.querySelector(".searchBox");
 function formSubmitHandler(event){
     event.preventDefault();
     var words= searchBoxEl.value.trim();
+
     console.log(words);
     var wordArr=words.split(" ");
     var len=wordArr.length;
@@ -180,3 +193,16 @@ function formSubmitHandler(event){
 }
 
 $(searchFormEl).on("submit", formSubmitHandler);
+
+$(".searchList").on("click", ".listBtn", function(){
+    var searchwords=$(this).text();
+    var searchWordArr=searchwords.split(" ");
+    var searchKeyWord=searchWordArr[0];
+    for (var i=1; i<searchWordArr.length; i++){
+        searchKeyWord=searchKeyWord+"+"+searchWordArr[i];
+    }
+    console.log(searchKeyWord);
+    document.location.href="./index.html?keyword="+searchKeyWord;
+})
+
+$("#clearBtn").on("click", clearList);
