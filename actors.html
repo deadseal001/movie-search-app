@@ -15,8 +15,8 @@
     <main>
         <div>
             <form class="search-form">
-                <input class="searchBox"></input>
-                <button class="searchBtn">Search</button>
+                <input class="searchBox" type="text" placeholder="Search Here"></input>
+                <button type="submit" class="searchBtn">Search</button>
             </form >
             <div class="searchList"></div>
             <button class="clearBtn bg-red-600" id="clearBtn"><span class="fa fa-trash"></span>Clear Search List</button>
@@ -43,6 +43,19 @@
             <button id="next" class="w-1/3 text-center">Next</button>
         </div>
     </main>
+    
+        <!-- modal -->
+        <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal" aria-hidden="true">
+            <div class="modal-content modal-dialog">
+              <div class="modal-header">
+                <h4 class="modal-title"></h4>
+              </div>
+              <div>
+              <button class="cancelBtn close">x</button>
+              </div> 
+            </div>
+          </div>
+        
 
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

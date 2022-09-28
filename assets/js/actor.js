@@ -22,7 +22,7 @@ function loadSearchList(){
 
 function clearList(){
     $(".listBtn").remove();
-    localStorage.setItem("movieSearchList",[]);
+    localStorage.setItem("movieSearchList",JSON.stringify([]));
     document.getElementById("clearBtn").style.visibility="hidden";
 }
 
@@ -61,7 +61,7 @@ var getActorInfo=function (){
             })
             
         } else {
-            callmodal("Actor");
+            callmodal("Error! Actor Not Found!");
         }
     });
     
@@ -70,7 +70,7 @@ var getActorInfo=function (){
 function callmodal(words){
 
     $('#error-modal').modal('show');
-        $(".modal-title").text("Error! "+words+" Not Found");
+        $(".modal-title").text(words);
 
     //cancel button
     $(".cancelBtn").on("click",function(){
@@ -180,18 +180,22 @@ var searchBoxEl=document.querySelector(".searchBox");
 function formSubmitHandler(event){
     event.preventDefault();
     var words= searchBoxEl.value.trim();
-
+    
     console.log(words);
-    var wordArr=words.split(" ");
-    var len=wordArr.length;
-    var queryStr="";
-    queryStr=wordArr[0];
-    for (var i=1; i<len; i++){
-        queryStr=queryStr+"+"+wordArr[i];
+    if (words ==""){
+        callmodal("Please input Actor or Movie of interest in the search box!");
+    } else {
+        var wordArr=words.split(" ");
+        var len=wordArr.length;
+        var queryStr="";
+        queryStr=wordArr[0];
+        for (var i=1; i<len; i++){
+            queryStr=queryStr+"+"+wordArr[i];
+        }
+        console.log(queryStr);
+        $(".searchBox").val("");
+        document.location.href="./index.html?keyword="+queryStr;
     }
-    console.log(queryStr);
-    $(".searchBox").val("");
-    document.location.href="./index.html?keyword="+queryStr;
 }
 
 $(searchFormEl).on("submit", formSubmitHandler);
@@ -208,3 +212,5 @@ $(".searchList").on("click", ".listBtn", function(){
 })
 
 $("#clearBtn").on("click", clearList);
+
+//edit search function for blank
