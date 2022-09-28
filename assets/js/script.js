@@ -27,13 +27,17 @@ function loadSearchList(){
 };
 
 //function add new search to the searchList
-function addSearchList(searchwords){
+function addSearchList(words){
+    console.log(words);
+
     for (i=0; i<searchList.length;i++) {
-        if (searchwords=== searchList[i]){
-            citylist.splice(i,1);
+        if (words === searchList[i]){
+            searchList.splice(i,1);
         }
     }
-    searchList.push(searchwords);
+    console.log(searchList);
+    console.log(words);
+    searchList.push(words);
     saveSearchList(searchList);
     loadSearchList();
 }
@@ -42,20 +46,15 @@ function addSearchList(searchwords){
 function clearList(){
     $(".listBtn").remove();
     searchList=[];
-    saveSearchList;
+    saveSearchList();
     loadSearchList();
     document.getElementById("clearBtn").style.visibility="hidden";
 }
 
-function callmodal(keyword){
-    var searchWordArr=keyword.split("+");
-    var searchWords=searchWordArr[0];
-    for (i=1; i<searchWordArr.length; i++){
-        searchWords=searchWords+" "+searchWordArr[i];
-    }
-    
+function callmodal(words){
+
     $('#error-modal').modal('show');
-        $(".modal-title").text("Error! "+searchWords+" Not Found");
+        $(".modal-title").text("Error! "+words+" Not Found");
 
     //cancel button
     $(".cancelBtn").on("click",function(){
@@ -66,8 +65,9 @@ function callmodal(keyword){
 }
 
 
-function searchFunc(keyword) {
+function searchFunc(keyword, words) {
     console.log(keyword);
+    console.log(words);
     $(".personCard").remove();
     var getIDUrl="https://api.themoviedb.org/3/search/multi?api_key=074915bcf109483ca070f5358f0e524b&language=en-US&query="+keyword; 
     fetch(getIDUrl).then(function (response) {
@@ -90,11 +90,13 @@ function searchFunc(keyword) {
                     }
                 }
                 if (nullcount === data.results.length) {
-                    callmodal(keyword);
+                    callmodal(words);
+                } else {
+                    addSearchList(words);// add button save and load
                 }
             })
         } else {
-            callmodal(keyword);
+            callmodal(words);
         }
     });
 
@@ -107,10 +109,11 @@ function addperson(data,i){
             var postercontainerEl=document.createElement("div");
                 postercontainerEl.classList="posterdiv bg";
                 var posterEl=document.createElement("img");
-                    posterEl.classList="poster rounded"
+                    posterEl.classList="poster clickable"
                     posterEl.setAttribute("src","https://image.tmdb.org/t/p/w500"+data.results[i].profile_path);
                     posterEl.setAttribute("alt",data.results[i].name);
                     posterEl.setAttribute("data-id",data.results[i].id);
+                    posterEl.setAttribute("data-type",data.results[i].media_type);
             postercontainerEl.appendChild(posterEl);
         personCardEl.appendChild(postercontainerEl);
             var infocontainerEl=document.createElement("ul");
@@ -120,9 +123,10 @@ function addperson(data,i){
                 var knownForEl=document.createElement("li");
                     knownForEl.textContent="Known For: "+ data.results[i].known_for_department;
                 var nameEl=document.createElement("li");
-                    nameEl.className="name";
+                    nameEl.classList="name clickable";
                     nameEl.textContent="Name: " + data.results[i].name;
                     nameEl.setAttribute("data-id",data.results[i].id);
+                    nameEl.setAttribute("data-type",data.results[i].media_type);
             infocontainerEl.appendChild(media_typeEl);
             infocontainerEl.appendChild(knownForEl);
             infocontainerEl.appendChild(nameEl);
@@ -137,10 +141,11 @@ function addmovie(data,i) {
             var postercontainerEl=document.createElement("div");
                 postercontainerEl.classList="posterdiv bg";
                 var posterEl=document.createElement("img");
-                    posterEl.classList="poster rounded"
+                    posterEl.classList="poster clickable"
                     posterEl.setAttribute("src","https://image.tmdb.org/t/p/w500"+data.results[i].poster_path);
                     posterEl.setAttribute("alt",data.results[i].title);
                     posterEl.setAttribute("data-id",data.results[i].id);
+                    posterEl.setAttribute("data-type",data.results[i].media_type);
             postercontainerEl.appendChild(posterEl);
         personCardEl.appendChild(postercontainerEl);
             var infocontainerEl=document.createElement("ul");
@@ -150,9 +155,10 @@ function addmovie(data,i) {
                 var dateEl=document.createElement("li");
                     dateEl.textContent="Release Date: "+ data.results[i].release_date;
                 var nameEl=document.createElement("li");
-                    nameEl.className="name";
+                    nameEl.classList="name clickable";
                     nameEl.textContent="Title: " + data.results[i].title;
                     nameEl.setAttribute("data-id",data.results[i].id);
+                    nameEl.setAttribute("data-type",data.results[i].media_type);
             infocontainerEl.appendChild(media_typeEl);
             infocontainerEl.appendChild(nameEl);
             infocontainerEl.appendChild(dateEl);
@@ -160,23 +166,27 @@ function addmovie(data,i) {
     containerEl.appendChild(personCardEl);
 }
 
+
+
 //bottom of the js
+//check if document.location.search has information to process
 if(IdString != ""){
     var searchKeyWord= IdString.split("=")[1];
     var searchWordArr=searchKeyWord.split("+");
-    var searchWords = searchWordArr[0];
+    var words = searchWordArr[0];
     for (i=1; i<searchWordArr.length; i++){
-        searchWords=searchWords+" "+searchWordArr[i];
+        words=words+" "+searchWordArr[i];
     }
-    addSearchList(searchWords);
-    searchFunc(searchKeyWord);
+    $('#error-modal').modal('hide');
+    console.log(words);
+    loadSearchList();
+    searchFunc(searchKeyWord,words);
 
 } else {
     // saveSearchList();
     loadSearchList();
+    $('#error-modal').modal('hide');
 }
-
-
 
 
 $(".searchList").on("click", ".listBtn", function(){
@@ -189,9 +199,8 @@ $(".searchList").on("click", ".listBtn", function(){
         searchKeyWord=searchKeyWord+"+"+searchWordArr[i];
     }
     console.log(searchKeyWord);
-    searchFunc(searchKeyWord);
+    searchFunc(searchKeyWord,searchwords);
 })
-
 
 $("#clearBtn").on("click", clearList);
 
@@ -211,7 +220,20 @@ function formSubmitHandler(event){
     }
     console.log(queryStr);
     $(".searchBox").val("");
-    searchFunc(queryStr);
+    searchFunc(queryStr, words);
 }
 
 $(searchFormEl).on("submit", formSubmitHandler);
+
+$(".container").on("click",".clickable", function(){
+    var type=$(this).attr("data-type");
+    var id=$(this).attr("data-id");
+    switch (type) {
+        case "person":
+            window.location.href="./actors.html?actorid="+id;
+            break;
+        case "movie":
+            window.location.href="./trailers.html?movieid="+id;
+
+    }
+})
