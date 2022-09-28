@@ -6,13 +6,20 @@ let movieDate = [];
 let moviePoster = [];
 let movieTrailerKey = [];
 let movieProvider = [];
-const movieProviderName = [];
-const movieProviderImg = [];
-const movieProviderLink = [];
-const movieProviderList = $(`provider`);
+let movieProviderName = [];
+let movieProviderImg = [];
+let movieProviderLink = [];
+
+const movieProviderEl = $(`#movie-provider`);
+const providerWrapper = $(`.provider-wrapper`);
+
+// ! ADDED movieIDcapture TO GET MOVIE ID FROM MOVIE SEARCH, THEN PASS IT TO getMovieData() at line 77
+// ! DON'T FORGET TO CHANGE movieID to movieIDcapture in the fetches at lines 72, 85, 100
+const movieIDcapture = window.location.search.split(`=`)[1];
 
 // ! DISPLAY MOVIE DATA
 const displayMovieData = function () {
+  // movieProviderEl.remove(`.provider`);
   // MOVIE TITLE
   const movieTitleEl = $(`.movie-title`);
   $(movieTitleEl).text(`${movieTitle}, Released: ${movieDate}`);
@@ -37,15 +44,10 @@ const displayMovieData = function () {
   });
   $(movieTrailerEl).append(movieTrailerFrame);
 
-  // MOVIE PROVIDERS
-  // iterate through movieProviderName and movieProviderImg
-  // clear out previous movie providers
-  const movieProviderEl = $(`#movie-provider`);
-
+  // ! MOVIE PROVIDERS
+  const movieProviderDiv = document.createElement(`div`);
   for (let i = 0; i < movieProviderName.length; i += 1) {
-    const movieProviderDiv = document.createElement(`div`);
-    $(movieProviderDiv).addClass(`provider`);
-    // const movieProviderLink = document.createElement(`a`);
+    $(movieProviderDiv).addClass(`list`);
     const movieProviderImgEl = document.createElement(`img`);
     const movieProviderNameEl = document.createElement(`span`);
     $(movieProviderImgEl).attr({
@@ -55,22 +57,28 @@ const displayMovieData = function () {
     });
     $(movieProviderNameEl).text(movieProviderName[i]);
     $(movieProviderDiv).append(movieProviderImgEl, movieProviderNameEl);
-    $(movieProviderEl).append(movieProviderDiv);
+    $(movieProviderEl).html(movieProviderDiv);
+    $(providerWrapper).html(movieProviderEl);
   }
 };
 
 // ! RETRIEVE MOVIE DATA
 const getMovieData = async (movieSearch) => {
   // FETCH MOVIE DATA
+  movieProviderName = [];
+  movieProviderImg = [];
+  movieProviderLink = [];
   const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${movieSearch}`;
   const movieData = await fetch(apiUrl)
     .then((response) => response.json())
     .then((data) => data);
   // MOVIE ID, TITLE, DATE RELEASED, POSTER
+  // movieID = movieIDcapture;
   movieID = movieData.results[0].id;
   movieTitle = movieData.results[0].title;
   movieDate = movieData.results[0].release_date;
   moviePoster = movieData.results[0].poster_path;
+  console.log(movieData);
 
   // FETCH MOVIE PROVIDERS
   const providerUrl = `https://api.themoviedb.org/3/movie/${movieID}/watch/providers?api_key=${apiKey}`;
@@ -86,7 +94,6 @@ const getMovieData = async (movieSearch) => {
     movieProviderImg.push(movieProvider[i].logo_path);
     movieProviderLink.push(movieProvider[i].provider_id);
   }
-  console.log(movieProvider);
 
   // FETCH MOVIE TRAILER
   const trailerUrl = `https://api.themoviedb.org/3/movie/${movieID}/videos?api_key=${apiKey}&language=en-US`;
@@ -100,7 +107,7 @@ const getMovieData = async (movieSearch) => {
 
 const formSubmitHandler = function (event) {
   event.preventDefault();
-  $(movieProviderList).remove();
+  // $(movieProviderList).remove();
   const searchBox = $(`.searchBox`);
   const movieSearch = $(searchBox).val().trim();
   // console.log(movieSearch);
