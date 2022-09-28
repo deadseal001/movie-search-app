@@ -106,6 +106,8 @@ var listMovies=function(data2){
     var movieCardListEl=document.querySelector(".movieCardList");
     console.log("nextval = "+nextval);
     $(".movieCard").remove();
+    var firstcard=nextval*6+1;
+    var lastcard=Math.min(data2.cast.length,firstcard+5);
     var left = data2.cast.length-(nextval+1)*shownumber;
     console.log(left);
     for (var i=0; i<Math.min(shownumber,left); i++){
@@ -150,7 +152,7 @@ var listMovies=function(data2){
     } else {
         document.getElementById("next").style.visibility="visible";
     }
-
+    $("#cardnumber").text(firstcard+" - "+lastcard+" / "+data2.cast.length);
 }
 
 loadSearchList();
