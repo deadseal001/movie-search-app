@@ -109,7 +109,7 @@ function addperson(data,i){
             var postercontainerEl=document.createElement("div");
                 postercontainerEl.classList="posterdiv bg";
                 var posterEl=document.createElement("img");
-                    posterEl.classList="poster clickable"
+                    posterEl.classList="poster link"
                     posterEl.setAttribute("src","https://image.tmdb.org/t/p/w500"+data.results[i].profile_path);
                     posterEl.setAttribute("alt",data.results[i].name);
                     posterEl.setAttribute("data-id",data.results[i].id);
@@ -123,7 +123,7 @@ function addperson(data,i){
                 var knownForEl=document.createElement("li");
                     knownForEl.textContent="Known For: "+ data.results[i].known_for_department;
                 var nameEl=document.createElement("li");
-                    nameEl.classList="name clickable";
+                    nameEl.classList="name link";
                     nameEl.textContent="Name: " + data.results[i].name;
                     nameEl.setAttribute("data-id",data.results[i].id);
                     nameEl.setAttribute("data-type",data.results[i].media_type);
@@ -141,7 +141,7 @@ function addmovie(data,i) {
             var postercontainerEl=document.createElement("div");
                 postercontainerEl.classList="posterdiv bg";
                 var posterEl=document.createElement("img");
-                    posterEl.classList="poster clickable"
+                    posterEl.classList="poster link"
                     posterEl.setAttribute("src","https://image.tmdb.org/t/p/w500"+data.results[i].poster_path);
                     posterEl.setAttribute("alt",data.results[i].title);
                     posterEl.setAttribute("data-id",data.results[i].id);
@@ -155,7 +155,7 @@ function addmovie(data,i) {
                 var dateEl=document.createElement("li");
                     dateEl.textContent="Release Date: "+ data.results[i].release_date;
                 var nameEl=document.createElement("li");
-                    nameEl.classList="name clickable";
+                    nameEl.classList="name link";
                     nameEl.textContent="Title: " + data.results[i].title;
                     nameEl.setAttribute("data-id",data.results[i].id);
                     nameEl.setAttribute("data-type",data.results[i].media_type);
@@ -225,7 +225,7 @@ function formSubmitHandler(event){
 
 $(searchFormEl).on("submit", formSubmitHandler);
 
-$(".container").on("click",".clickable", function(){
+$(".container").on("click",".link", function(){
     var type=$(this).attr("data-type");
     var id=$(this).attr("data-id");
     switch (type) {
