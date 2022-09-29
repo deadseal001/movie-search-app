@@ -1,0 +1,70 @@
+button {
+	outline: none !important;
+}
+nav ,#MOVIECARD {
+    background: #83d792;
+}
+
+#movieResults {
+	
+}
+.h-96 {
+	height: 23rem;
+}
+
+.prose h3 + * {
+    margin-top: 0;
+}
+.aspect-h-9 {
+    --tw-aspect-h: 9;
+}
+.aspect-w-16 {
+    --tw-aspect-w: 16;
+}
+.aspect-w-1, .aspect-w-2, .aspect-w-3, .aspect-w-4, .aspect-w-5, .aspect-w-6, .aspect-w-7, .aspect-w-8, .aspect-w-9, .aspect-w-10, .aspect-w-11, .aspect-w-12, .aspect-w-13, .aspect-w-14, .aspect-w-15, .aspect-w-16 {
+    position: relative;
+    padding-bottom: calc(var(--tw-aspect-h) / var(--tw-aspect-w) * 100%);
+}
+.aspect-w-1 > *, .aspect-w-2 > *, .aspect-w-3 > *, .aspect-w-4 > *, .aspect-w-5 > *, .aspect-w-6 > *, .aspect-w-7 > *, .aspect-w-8 > *, .aspect-w-9 > *, .aspect-w-10 > *, .aspect-w-11 > *, .aspect-w-12 > *, .aspect-w-13 > *, .aspect-w-14 > *, .aspect-w-15 > *, .aspect-w-16 > * {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.rounded-lg {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+img, svg, video, canvas, audio, iframe, embed, object {
+    display: block;
+    vertical-align: middle;
+}
+
+.searchLoop .text-white {
+    text-shadow: 0 0 7px rgb(0 0 0);
+}
+
+h1#actorname {
+    font-size: 2rem;
+}
+
+.movieCardList {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+}
+
+card.movieCard {
+    width: 100% !important;
+    display: flex;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+    margin-bottom: 1rem;
+}
