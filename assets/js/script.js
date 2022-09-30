@@ -9,7 +9,7 @@ function saveSearchList() {
 
 function loadSearchList() {
   //remove all the searchList button
-  $(".listBtn").remove();
+  $(".history").remove();
   searchList = JSON.parse(localStorage.getItem("movieSearchList"));
   if (!searchList) {
     console.log("searchList!")
