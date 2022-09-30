@@ -113,11 +113,11 @@ var listMovies=function(data2){
     for (var i=0; i<Math.min(shownumber,left); i++){
         var movieID=data2.cast[i+nextval*shownumber].id;
         var movieCardEl=document.createElement("card");
-            movieCardEl.className="movieCard";
+            movieCardEl.classList="movieCard w-1/6 gap-3";
             movieCardEl.setAttribute("width", "150px");
         var posterLink="https://image.tmdb.org/t/p/w500"+data2.cast[i+nextval*shownumber].poster_path;
         var postEl=document.createElement("img");
-            postEl.classList="moviePoster  link";
+            postEl.classList="moviePoster link";
             postEl.setAttribute("src",posterLink);
             postEl.setAttribute("width", "150px");
             postEl.setAttribute("alt",data2.cast[i+nextval*shownumber].title);
@@ -215,6 +215,4 @@ $(".searchList").on("click", ".listBtn", function(){
     document.location.href="./index.html?keyword="+searchKeyWord;
 })
 
-//$("#clearBtn").on("click", clearList);
-
-//edit search function for blank
+$("#clearBtn").on("click", clearList);
