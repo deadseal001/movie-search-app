@@ -1,4 +1,4 @@
-var searchList = ["tom cruise", "tom hanks"]; //["tom curise","tom hanks"]
+var searchList = [];
 var IdString = document.location.search;
 console.log(IdString);
 
@@ -8,7 +8,6 @@ function saveSearchList() {
 }
 
 function loadSearchList() {
-  //remove all the searchList button
   $(".history").remove();
   searchList = JSON.parse(localStorage.getItem("movieSearchList"));
   if (!searchList) {
@@ -19,13 +18,9 @@ function loadSearchList() {
     var searchEl = $("<div>");
     searchEl.addClass(['history', 'flex', 'flex-col', 'items-center', 'justify-center', 'w-auto', 'h-10', 'text-xs', 'bg-gray-900', 'rounded-2xl', 'text-white', 'shadow', 'hover:shadow-md', 'cursor-pointer', 'mu-2', 'mr-2', 'p-1', 'transition', 'ease-in', 'duration-300']);
     var buttonEl = $("<button>");
-
     buttonEl.html(searchList[searchList.length - 1 - i]);
-    //buttonEl.classList = "listBtn";
     buttonEl.addClass(['listBtn', 'items-center', 'justify-center', 'w-20', 'h-10']);
-
     searchEl.append(buttonEl);
-
     $(".searchList").prepend(searchEl);
   }
   if (searchList.length > 0) {
@@ -60,18 +55,13 @@ function clearList() {
 
 function callmodal(words) {
 
-  //$('#error-modal').modal('show');
-  //$(".modal-title").text(words);
-
-  //cancel button
   $(".cancelBtn").on("click", function () {
     $(".modal-title").text("");
-    //    $('#error-modal').modal('hide');
     $('searchBox').trigger("focus");
   })
 }
 
-
+//search function
 function searchFunc(keyword, words) {
 
   Swal.fire({
@@ -83,14 +73,12 @@ function searchFunc(keyword, words) {
       Swal.showLoading()
       const b = Swal.getHtmlContainer().querySelector('b')
       timerInterval = setInterval(() => {
- 
       }, 100)
     },
     willClose: () => {
       clearInterval(timerInterval)
     }
   }).then((result) => {
-    /* Read more about handling dismissals below */
     if (result.dismiss === Swal.DismissReason.timer) {
       console.log('I was closed by the timer')
     }
@@ -106,7 +94,6 @@ function searchFunc(keyword, words) {
       // console.log(IDresponse);
       response.json().then(function (data) {
         console.log(data);
-        // list search results
         var nullcount = 0;
         for (var i = 0; i < data.results.length; i++) {
           switch (data.results[i].media_type) {
@@ -130,7 +117,7 @@ function searchFunc(keyword, words) {
             html: '<b>'+ words + '</b> Not Found.',
           })
         } else {
-          addSearchList(words); // add button save and load
+          addSearchList(words); 
         }
       })
     } else {
@@ -143,8 +130,8 @@ function searchFunc(keyword, words) {
   });
 
 }
-function gatPopular() {
 
+function gatPopular() {
   Swal.fire({
     title: false,
     timer: 500,
@@ -154,14 +141,12 @@ function gatPopular() {
       Swal.showLoading()
       const b = Swal.getHtmlContainer().querySelector('b')
       timerInterval = setInterval(() => {
-      
       }, 100)
     },
     willClose: () => {
       clearInterval(timerInterval)
     }
   }).then((result) => {
-    /* Read more about handling dismissals below */
     if (result.dismiss === Swal.DismissReason.timer) {
       console.log('I was closed by the timer')
     }
@@ -192,6 +177,7 @@ function gatPopular() {
   });
 
 }
+
 function addperson(data, i) {
   if (i == 0) {
     var pcontainerEl = document.querySelector(".personcard");
@@ -200,19 +186,19 @@ function addperson(data, i) {
     var postercontainerEl = document.createElement("div");
     postercontainerEl.classList = "posterdiv bg";
     var posterEl = document.createElement("img");
-    posterEl.classList = "poster link rounded-lg"
-    posterEl.setAttribute("src", "https://image.tmdb.org/t/p/w500" + data.results[i].profile_path);
-    posterEl.setAttribute("alt", data.results[i].name);
-    posterEl.setAttribute("data-id", data.results[i].id);
-    posterEl.setAttribute("data-type", data.results[i].media_type);
-    postercontainerEl.appendChild(posterEl);
-    personCardEl.appendChild(postercontainerEl);
+      posterEl.classList = "poster link rounded-lg"
+      posterEl.setAttribute("src", "https://image.tmdb.org/t/p/w500" + data.results[i].profile_path);
+      posterEl.setAttribute("alt", data.results[i].name);
+      posterEl.setAttribute("data-id", data.results[i].id);
+      posterEl.setAttribute("data-type", data.results[i].media_type);
+      postercontainerEl.appendChild(posterEl);
+      personCardEl.appendChild(postercontainerEl);
     var infocontainerEl = document.createElement("ul");
-    infocontainerEl.classList = "infodiv bg"
+      infocontainerEl.classList = "infodiv bg"
     var media_typeEl = document.createElement("li");
-    media_typeEl.textContent = "Media Type: " + data.results[i].media_type;
+      media_typeEl.textContent = "Media Type: " + data.results[i].media_type;
     var knownForEl = document.createElement("li");
-    knownForEl.textContent = "Known For: " + data.results[i].known_for_department;
+      knownForEl.textContent = "Known For: " + data.results[i].known_for_department;
     var nameEl = document.createElement("li");
     nameEl.classList = "name link";
     nameEl.textContent = "Name: " + data.results[i].name;
@@ -264,32 +250,7 @@ function addperson(data, i) {
     docEl += `</div>`;
     docEl += `</div>`;
     movieEl.html(docEl);
-    //  var personCardEl = document.createElement("div");
-    //  personCardEl.classList = "personCard bg-black-500/0.5";
-    //  var postercontainerEl = document.createElement("div");
-    //  postercontainerEl.classList = "posterdiv bg";
-    //  var posterEl = document.createElement("img");
-    //  posterEl.classList = "poster link"
-    //  posterEl.setAttribute("src", "https://image.tmdb.org/t/p/w500" + data.results[i].poster_path);
-    //  posterEl.setAttribute("alt", data.results[i].title);
-    //  posterEl.setAttribute("data-id", data.results[i].id);
-    //  posterEl.setAttribute("data-type", data.results[i].media_type);
-    //  postercontainerEl.appendChild(posterEl);
-    //  personCardEl.appendChild(postercontainerEl);
-    //  var infocontainerEl = document.createElement("ul");
-    //  infocontainerEl.classList = "infodiv bg"
-    //  var media_typeEl = document.createElement("li");
-    //  media_typeEl.textContent = "Media Type: " + data.results[i].media_type;
-    //  var dateEl = document.createElement("li");
-    //  dateEl.textContent = "Release Date: " + data.results[i].release_date;
-    //  var nameEl = document.createElement("li");
-    //  docEl.classList = "name link";
-    //  docEl.setAttribute("data-id", data.results[i].id);
-    //  docEl.setAttribute("data-type", data.results[i].media_type);
-    //  infocontainerEl.appendChild(media_typeEl);
-    //  infocontainerEl.appendChild(nameEl);
-    //  infocontainerEl.appendChild(dateEl);
-    //  personCardEl.appendChild(infocontainerEl);
+
     $containerEl.append(movieEl);
   }
 }
@@ -335,32 +296,6 @@ function addmovie(data, i) {
   docEl += `</div>`;
   docEl += `</div>`;
   movieEl.html(docEl);
-  //  var personCardEl = document.createElement("div");
-  //  personCardEl.classList = "personCard bg-black-500/0.5";
-  //  var postercontainerEl = document.createElement("div");
-  //  postercontainerEl.classList = "posterdiv bg";
-  //  var posterEl = document.createElement("img");
-  //  posterEl.classList = "poster link"
-  //  posterEl.setAttribute("src", "https://image.tmdb.org/t/p/w500" + data.results[i].poster_path);
-  //  posterEl.setAttribute("alt", data.results[i].title);
-  //  posterEl.setAttribute("data-id", data.results[i].id);
-  //  posterEl.setAttribute("data-type", data.results[i].media_type);
-  //  postercontainerEl.appendChild(posterEl);
-  //  personCardEl.appendChild(postercontainerEl);
-  //  var infocontainerEl = document.createElement("ul");
-  //  infocontainerEl.classList = "infodiv bg"
-  //  var media_typeEl = document.createElement("li");
-  //  media_typeEl.textContent = "Media Type: " + data.results[i].media_type;
-  //  var dateEl = document.createElement("li");
-  //  dateEl.textContent = "Release Date: " + data.results[i].release_date;
-  //  var nameEl = document.createElement("li");
-  //  docEl.classList = "name link";
-  //  docEl.setAttribute("data-id", data.results[i].id);
-  //  docEl.setAttribute("data-type", data.results[i].media_type);
-  //  infocontainerEl.appendChild(media_typeEl);
-  //  infocontainerEl.appendChild(nameEl);
-  //  infocontainerEl.appendChild(dateEl);
-  //  personCardEl.appendChild(infocontainerEl);
   $containerEl.append(movieEl);
 }
 
@@ -374,15 +309,11 @@ if (IdString != "") {
   for (i = 1; i < searchWordArr.length; i++) {
     words = words + " " + searchWordArr[i];
   }
-  //  $('#error-modal').modal('hide');
   console.log(words);
   loadSearchList();
   searchFunc(searchKeyWord, words);
-
 } else {
-  // saveSearchList();
   loadSearchList();
-  //  $('#error-modal').modal('hide');
 }
 
 
@@ -407,7 +338,6 @@ var searchBoxEl = document.querySelector(".searchBox");
 function formSubmitHandler(event) {
   event.preventDefault();
   var words = searchBoxEl.value.trim();
-
   console.log(words);
   if (words == "") {
     Swal.fire({
@@ -431,6 +361,7 @@ function formSubmitHandler(event) {
 
 $(searchFormEl).on("submit", formSubmitHandler);
 
+//click button eventlistener
 $("body").on("click", ".link", function () {
   var type = $(this).attr("data-type");
   var id = $(this).attr("data-id");
@@ -444,7 +375,7 @@ $("body").on("click", ".link", function () {
   }
 })
 
+//get and list popular when open the page
 $('document').ready(function(){
 	gatPopular();
-	
 });
